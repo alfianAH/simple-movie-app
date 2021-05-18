@@ -1,4 +1,4 @@
-package com.unhas.simplemovieapp.view.movie
+package com.unhas.simplemovieapp.view.tvseries
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -7,21 +7,21 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.unhas.simplemovieapp.databinding.FragmentMovieBinding
+import com.unhas.simplemovieapp.databinding.FragmentTvSeriesBinding
 import com.unhas.simplemovieapp.viewmodel.ViewModelFactory
 
-class MovieFragment : Fragment() {
+class TVSeriesFragment : Fragment() {
 
-    private lateinit var fragmentMovieBinding: FragmentMovieBinding
-    private lateinit var viewModel: MovieViewModel
+    private lateinit var fragmentTVSeriesBinding: FragmentTvSeriesBinding
+    private lateinit var viewModel: TVSeriesViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        fragmentMovieBinding = FragmentMovieBinding.inflate(layoutInflater, container, false)
+        fragmentTVSeriesBinding = FragmentTvSeriesBinding.inflate(layoutInflater, container, false)
         // Inflate the layout for this fragment
-        return fragmentMovieBinding.root
+        return fragmentTVSeriesBinding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -29,31 +29,30 @@ class MovieFragment : Fragment() {
 
         if(activity != null){
             val factory = ViewModelFactory.getInstance(requireActivity())
-            viewModel = ViewModelProvider(this, factory)[MovieViewModel::class.java]
+            viewModel = ViewModelProvider(this, factory)[TVSeriesViewModel::class.java]
 
-            showMovieList()
+            showTVSeriesList()
         }
     }
 
     /**
      * Show movie list in fragment
      */
-    private fun showMovieList(){
+    private fun showTVSeriesList(){
         setLoading(true)
 
-        // Observe movies
-        viewModel.getMovies().observe(viewLifecycleOwner, { movies ->
+        viewModel.getTVSeries().observe(viewLifecycleOwner, {tvSeries ->
             setLoading(false)
-            val movieAdapter = MovieAdapter()
-            movieAdapter.setMovies(movies)
+            val tvSeriesAdapter = TVSeriesAdapter()
+            tvSeriesAdapter.setTVSeries(tvSeries)
 
-            with(fragmentMovieBinding.rvList){
+            with(fragmentTVSeriesBinding.rvList){
                 layoutManager = LinearLayoutManager(context)
                 setHasFixedSize(true)
-                adapter = movieAdapter
+                adapter = tvSeriesAdapter
             }
 
-            movieAdapter.notifyDataSetChanged()
+            tvSeriesAdapter.notifyDataSetChanged()
         })
     }
 
@@ -62,8 +61,8 @@ class MovieFragment : Fragment() {
      */
     private fun setLoading(isVisible: Boolean){
         if(isVisible)
-            fragmentMovieBinding.progressBar.visibility = View.VISIBLE
+            fragmentTVSeriesBinding.progressBar.visibility = View.VISIBLE
         else
-            fragmentMovieBinding.progressBar.visibility = View.GONE
+            fragmentTVSeriesBinding.progressBar.visibility = View.GONE
     }
 }
