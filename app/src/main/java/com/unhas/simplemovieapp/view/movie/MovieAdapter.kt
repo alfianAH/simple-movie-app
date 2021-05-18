@@ -1,5 +1,7 @@
 package com.unhas.simplemovieapp.view.movie
 
+import android.content.Context
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
@@ -8,7 +10,7 @@ import com.unhas.simplemovieapp.R
 import com.unhas.simplemovieapp.data.source.remote.response.MovieResultsItem
 import com.unhas.simplemovieapp.databinding.ItemsFilmBinding
 
-class MovieAdapter: RecyclerView.Adapter<MovieAdapter.MovieViewHolder>() {
+class MovieAdapter constructor(private val context: Context): RecyclerView.Adapter<MovieAdapter.MovieViewHolder>() {
 
     companion object{
         private const val IMAGE_URL = "https://image.tmdb.org/t/p/w500"
@@ -24,7 +26,7 @@ class MovieAdapter: RecyclerView.Adapter<MovieAdapter.MovieViewHolder>() {
 
     inner class MovieViewHolder(private val binding: ItemsFilmBinding):
         RecyclerView.ViewHolder(binding.root) {
-        fun bind(movie: MovieResultsItem){
+        fun bind(movie: MovieResultsItem, context: Context){
             with(binding){
                 textItemTitle.text = movie.title
                 textScore.text = itemView.context.getString(R.string.score, movie.voteAverage)
@@ -33,6 +35,20 @@ class MovieAdapter: RecyclerView.Adapter<MovieAdapter.MovieViewHolder>() {
                 Glide.with(itemView.context)
                     .load(IMAGE_URL + movie.posterPath)
                     .into(imgPoster)
+
+                btnShare.setOnClickListener {
+                    val textMessage = "${movie.title}\n" +
+                            "Rating: ${movie.voteAverage} / 10\n" +
+                            "Summary: ${movie.overview}"
+
+                    val sendIntent = Intent().apply{
+                        action = Intent.ACTION_SEND
+                        putExtra(Intent.EXTRA_TEXT, textMessage)
+                        type = "text/plain"
+                    }
+
+                    context.startActivity(sendIntent)
+                }
             }
         }
     }
@@ -44,7 +60,7 @@ class MovieAdapter: RecyclerView.Adapter<MovieAdapter.MovieViewHolder>() {
 
     override fun onBindViewHolder(holder: MovieViewHolder, position: Int) {
         val movie = listMovies[position]
-        holder.bind(movie)
+        holder.bind(movie, context)
     }
 
     override fun getItemCount(): Int = listMovies.size

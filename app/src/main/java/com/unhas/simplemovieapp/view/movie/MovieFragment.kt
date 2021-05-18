@@ -44,7 +44,7 @@ class MovieFragment : Fragment() {
         // Observe movies
         viewModel.getMovies().observe(viewLifecycleOwner, { movies ->
             setLoading(false)
-            val movieAdapter = MovieAdapter()
+            val movieAdapter = MovieAdapter(requireContext())
             movieAdapter.setMovies(movies)
 
             with(fragmentMovieBinding.rvList){

@@ -43,7 +43,7 @@ class TVSeriesFragment : Fragment() {
 
         viewModel.getTVSeries().observe(viewLifecycleOwner, {tvSeries ->
             setLoading(false)
-            val tvSeriesAdapter = TVSeriesAdapter()
+            val tvSeriesAdapter = TVSeriesAdapter(requireContext())
             tvSeriesAdapter.setTVSeries(tvSeries)
 
             with(fragmentTVSeriesBinding.rvList){
