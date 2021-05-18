@@ -6,7 +6,7 @@ Features:
 1. API using Retrofit
 1. Recycler View
 1. MVVM
-1. Share film (Implicit intent
+1. Share film (Implicit intent)
 
 ## Getting Started
 1. Clone this repository to your laptop/computer
