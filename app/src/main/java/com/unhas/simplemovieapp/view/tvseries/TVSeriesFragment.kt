@@ -28,7 +28,7 @@ class TVSeriesFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         if(activity != null){
-            val factory = ViewModelFactory.getInstance(requireActivity())
+            val factory = ViewModelFactory.getInstance()
             viewModel = ViewModelProvider(this, factory)[TVSeriesViewModel::class.java]
 
             showTVSeriesList()

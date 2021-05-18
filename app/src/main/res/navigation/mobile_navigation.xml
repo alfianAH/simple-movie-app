@@ -12,7 +12,7 @@
         tools:layout="@layout/fragment_movie" />
 
     <fragment
-        android:id="@+id/navigation_dashboard"
+        android:id="@+id/navigation_tv_series"
         android:name="com.unhas.simplemovieapp.view.tvseries.TVSeriesFragment"
         android:label="@string/tv_series"
         tools:layout="@layout/fragment_tv_series" />

@@ -1,6 +1,5 @@
 package com.unhas.simplemovieapp.viewmodel
 
-import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.unhas.simplemovieapp.data.source.AppRepository
@@ -15,9 +14,9 @@ class ViewModelFactory private constructor(private val appRepository: AppReposit
         @Volatile
         private var instance: ViewModelFactory? = null
 
-        fun getInstance(context: Context): ViewModelFactory =
+        fun getInstance(): ViewModelFactory =
             instance ?: synchronized(this){
-                instance ?: ViewModelFactory(Injection.provideRepository(context))
+                instance ?: ViewModelFactory(Injection.provideRepository())
             }
     }
 
