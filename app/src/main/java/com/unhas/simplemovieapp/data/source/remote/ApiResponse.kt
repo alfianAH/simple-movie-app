@@ -1,4 +1,4 @@
-package com.unhas.simplemovieapp.data
+package com.unhas.simplemovieapp.data.source.remote
 
 class ApiResponse<T>(val status: StatusResponse, val body: T, val message: String?) {
     companion object{

@@ -1,4 +1,4 @@
-package com.unhas.simplemovieapp.data
+package com.unhas.simplemovieapp.data.source.remote
 
 enum class StatusResponse {
     SUCCESS,

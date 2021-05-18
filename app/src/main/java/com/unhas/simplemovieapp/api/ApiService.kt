@@ -1,7 +1,7 @@
 package com.unhas.simplemovieapp.api
 
-import com.unhas.simplemovieapp.data.response.MovieResponse
-import com.unhas.simplemovieapp.data.response.TVSeriesResponse
+import com.unhas.simplemovieapp.data.source.remote.response.MovieResponse
+import com.unhas.simplemovieapp.data.source.remote.response.TVSeriesResponse
 import retrofit2.Call
 import retrofit2.http.GET
 import retrofit2.http.Query
