@@ -6,7 +6,6 @@ import com.unhas.simplemovieapp.data.source.remote.response.TVSeriesResponse
 import retrofit2.Call
 
 class APILoaderHelper {
-
     fun findMovies(apiKey: String): Call<MovieResponse> {
         return ApiConfig.getApiService().getMovie(apiKey)
     }

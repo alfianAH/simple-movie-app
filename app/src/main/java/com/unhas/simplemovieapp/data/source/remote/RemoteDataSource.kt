@@ -1,17 +1,9 @@
 package com.unhas.simplemovieapp.data.source.remote
 
-import android.util.Log
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import com.unhas.simplemovieapp.BuildConfig
 import com.unhas.simplemovieapp.data.source.remote.response.MovieResponse
-import com.unhas.simplemovieapp.data.source.remote.response.MovieResultsItem
 import com.unhas.simplemovieapp.data.source.remote.response.TVSeriesResponse
-import com.unhas.simplemovieapp.data.source.remote.response.TVSeriesResultsItem
 import com.unhas.simplemovieapp.utils.APILoaderHelper
 import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 
 class RemoteDataSource private constructor(private val apiLoaderHelper: APILoaderHelper) {
 
@@ -23,54 +15,25 @@ class RemoteDataSource private constructor(private val apiLoaderHelper: APILoade
             instance ?: synchronized(this) {
                 instance ?: RemoteDataSource(apiLoaderHelper)
             }
-
-        private const val TAG = "RemoteDataSource"
-        private const val API_KEY = BuildConfig.TMBDApiKey
     }
 
-    fun getMovies(): LiveData<ApiResponse<List<MovieResultsItem>>> {
-
-        val resultMovie = MutableLiveData<ApiResponse<List<MovieResultsItem>>>()
-
-        apiLoaderHelper.findMovies(API_KEY).enqueue(object : Callback<MovieResponse> {
-            override fun onResponse(call: Call<MovieResponse>, response: Response<MovieResponse>) {
-                if (response.isSuccessful) {
-                    resultMovie.value =
-                        ApiResponse.success(response.body()?.results as List<MovieResultsItem>)
-                } else {
-                    Log.e(TAG, "onResponse: ${response.message()}")
-                }
-            }
-
-            override fun onFailure(call: Call<MovieResponse>, t: Throwable) {
-                Log.e(TAG, "onFailure: ${t.message}")
-            }
-        })
-
-        return resultMovie
+    fun getMovies(apiKey: String, callback: LoadMoviesCallback){
+        callback.onAllMoviesReceived(apiLoaderHelper.findMovies(apiKey))
     }
 
-    fun getTVSeries(): LiveData<ApiResponse<List<TVSeriesResultsItem>>> {
-        val resultTVSeries = MutableLiveData<ApiResponse<List<TVSeriesResultsItem>>>()
+    fun getTVSeries(apiKey: String, callback: LoadTVSeriesCallback){
+        callback.onAllTVSeriesReceived(apiLoaderHelper.findTVSeries(apiKey))
+    }
 
-        apiLoaderHelper.findTVSeries(API_KEY).enqueue(object : Callback<TVSeriesResponse> {
-            override fun onResponse(
-                call: Call<TVSeriesResponse>,
-                response: Response<TVSeriesResponse>
-            ) {
-                if (response.isSuccessful) {
-                    resultTVSeries.value =
-                        ApiResponse.success(response.body()?.results as List<TVSeriesResultsItem>)
-                } else {
-                    Log.e(TAG, "onResponse: ${response.message()}")
-                }
-            }
+    /**
+     * Interfaces to call client for each responses
+     */
 
-            override fun onFailure(call: Call<TVSeriesResponse>, t: Throwable) {
-                Log.e(TAG, "onFailure: ${t.message}")
-            }
-        })
+    interface LoadMoviesCallback{
+        fun onAllMoviesReceived(client : Call<MovieResponse>)
+    }
 
-        return resultTVSeries
+    interface LoadTVSeriesCallback{
+        fun onAllTVSeriesReceived(client: Call<TVSeriesResponse>)
     }
 }
